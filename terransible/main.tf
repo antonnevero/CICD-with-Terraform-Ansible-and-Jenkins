@@ -74,3 +74,9 @@ resource "aws_subnet" "mtc_private_subnet" {
         Name = "mtc-private-${count.index + 1}"
     }
 }
+
+resource "aws_route_table_association" "mtc_public_assoc" {
+    count = length(local.azs)
+    subnet_id = aws_subnet.mtc_public_subnet[count.index].id
+    route_table_id = aws_route_table.mtc_public_rt.id
+}
