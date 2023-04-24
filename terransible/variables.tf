@@ -1,34 +1,39 @@
-variable vpc_cidr {
-    type = string
-    default = "10.124.0.0/16"
+variable "vpc_cidr" {
+  type    = string
+  default = "10.124.0.0/16"
 }
 
-variable access_ip {
-    type = string
-    default = "94.232.72.131/32"
+variable "access_ip" {
+  type    = string
+  default = "94.232.72.131/32"
 }
 
-variable main_instance_type {
-    type = string
-    default = "t2.micro"
+variable "cloud9_ip" {
+  type    = string
+  default = "35.158.218.87/32"
 }
 
-variable main_vol_size {
-    type = number
-    default = 8
+variable "main_instance_type" {
+  type    = string
+  default = "t2.micro"
 }
 
-variable main_instance_count {
-    type = number
-    default = 1
+variable "main_vol_size" {
+  type    = number
+  default = 8
 }
 
-variable key_name {
-    type = string
+variable "main_instance_count" {
+  type    = number
+  default = 1
 }
 
-variable public_key_path {
-    type = string
+variable "key_name" {
+  type = string
+}
+
+variable "public_key_path" {
+  type = string
 }
 
 
