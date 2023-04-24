@@ -8,6 +8,11 @@ variable access_ip {
     default = "94.232.72.131/32"
 }
 
+variable "cloud9_ip" {
+    type = string
+    default = "35.158.218.87/32"
+}
+
 variable main_instance_type {
     type = string
     default = "t2.micro"
