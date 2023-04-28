@@ -36,7 +36,7 @@ resource "aws_instance" "mtc_main" {
   }
 
   provisioner "local-exec" {
-    command = "printf '\n${self.public_ip}' >> aws_hosts && aws ec2 wait instance-status-ok --instance-ids ${self.id} --region eu-central-1 "
+    command = "printf '\n${self.public_ip}' >> aws_hosts && aws ec2 wait instance-status-ok --instance-ids ${self.id} --region eu-central-1"
   }
 
   provisioner "local-exec" {
@@ -55,14 +55,14 @@ resource "aws_instance" "mtc_main" {
 #       user        = "ubuntu"
 #       private_key = file("/home/ubuntu/.ssh/mtckey")
 #       host        = aws_instance.mtc_main[count.index].public_ip
-#     }
+#     }lsblk
 #   }
 # }
 
 resource "null_resource" "grafana_install" {
   depends_on = [aws_instance.mtc_main]
   provisioner "local-exec" {
-    command = "ansible-playbook -i aws_hosts --key-file /home/ubuntu/.ssh/mtckey playbooks/grafana.yml"
+    command = "ansible-playbook -i aws_hosts --key-file /home/ubuntu/.ssh/mtckey playbooks/main-playbook.yml"
   }
 }
 
