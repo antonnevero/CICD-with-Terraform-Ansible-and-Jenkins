@@ -2,7 +2,10 @@
 - name: Bootstrap Main Node
   hosts: main
   become: yes
-  
+  vars:
+    listen_address: 0.0.0.0
+    listen_port: 9090
+    
   tasks:
   - name: download apt key
     ansible.builtin.apt_key:
@@ -72,7 +75,9 @@
     loop:
       - /home/ubuntu/prometheus-2.30.3.linux-amd64/consoles
       - /home/ubuntu/prometheus-2.30.3.linux-amd64/console_libraries
-    
-  # - name: Create Config File
+  - name: Create Config File
+    ansible.builtin.template:
+      src: prometheus.yml.j2
+      dest: /etc/prometheus/prometheus.yml
   # - name: Create Systemd filename
   # - name: Ensure Prometheus is Started
