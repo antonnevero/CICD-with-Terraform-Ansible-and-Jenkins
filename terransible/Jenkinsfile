@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Init') {
       steps {
-        sh 'cd terransible && ls'
+        sh 'cd terransible'
         sh 'export TF_IN_AUTOMATION=true'
         sh 'terraform init -no-color'
       }
