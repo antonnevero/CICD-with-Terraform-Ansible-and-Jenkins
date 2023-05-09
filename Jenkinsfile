@@ -18,7 +18,7 @@ pipeline {
         sh 'terraform plan -no-color -var-file="$BRANCH_NAME.tfvars"'
       }
     }
-    stage ('Validation Apply') {
+    stage ('Validate Apply') {
       when {
         beforeInput true
         branch "dev"
