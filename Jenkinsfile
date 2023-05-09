@@ -12,15 +12,18 @@ pipeline {
         sh 'terraform init -no-color'
       }
     }
+    stage('Plan') {
+      steps {
+        sh 'terraform plan -no-color'
+      }
+    }
     stage ('Validate Apply') {
       input {
         message "Do you want to apply this plan?"
         ok "Apply this plan."
       }
-    }
-    stage('Plan') {
       steps {
-        sh 'terraform plan -no-color'
+        echo 'Apply Accepted'
       }
     }
     stage('Apply') {
