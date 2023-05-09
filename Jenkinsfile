@@ -36,9 +36,27 @@ pipeline {
         sh 'aws ec2 wait instance-status-ok --region eu-central-1'
       }
     }
+    stage ('Validate Ansible') {
+      input {
+        message "Do you want to run Ansible?"
+        ok "Run Ansible!"
+      }
+      steps {
+        echo 'Ansible has run'
+      }
+    }
     stage ('Ansible') {
       steps {
         ansiblePlaybook(credentialsId: 'ec-2-ssh-key', inventory: 'aws_hosts', playbook: 'playbooks/main-playbook.yml')
+      }
+    }
+    stage ('Validate Destroy') {
+      input {
+        message "Do you want to destroy everything?"
+        ok "Destroy everything"
+      }
+      steps {
+        echo 'Everything has destroyed. Good bye!'
       }
     }
     stage('Destroy') {
