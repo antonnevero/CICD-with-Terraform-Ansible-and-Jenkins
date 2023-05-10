@@ -81,8 +81,5 @@ pipeline {
     failure {
       sh 'terraform destroy -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
     }
-    aborted {
-      sh 'terraform destroy -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
-    }
   }
 }
