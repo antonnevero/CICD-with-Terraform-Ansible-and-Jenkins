@@ -11,7 +11,6 @@ pipeline {
         sh 'ls'
         sh 'cat $BRANCH_NAME.tfvars'
         sh 'terraform init -no-color'
-        # sh 'terraform force-unlock 45b2d58d-1d28-beb9-4ae8-c47819ca164a -auto-approve'
       }
     }
     stage('Plan') {
