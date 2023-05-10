@@ -51,7 +51,7 @@ pipeline {
         ok "Run Ansible!"
       }
       steps {
-        echo 'Ansible has run'
+        echo 'Ansible run'
       }
     }
     stage ('Ansible') {
