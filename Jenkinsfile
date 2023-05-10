@@ -62,7 +62,7 @@ pipeline {
     stage ('Validate Destroy') {
       input {
         message "Do you want to destroy everything?"
-        ok "Destroy everything"
+        ok "Destroy everything!"
       }
       steps {
         echo 'Everything has destroyed. Good bye!'
