@@ -65,7 +65,7 @@ pipeline {
         ok "Destroy everything!"
       }
       steps {
-        echo 'Everything has destroyed. Good bye!'
+        echo 'Everything is destroying. Good bye!'
       }
     }
     stage('Destroy') {
