@@ -36,9 +36,16 @@ pipeline {
         sh 'terraform apply -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
       }
     }
+    stage ('Inventory') {
+      steps {
+        sh 'printf "\\n$(terraform output -json instance_ips | jq -r \'.[]\')" >> aws_hosts'
+      }
+    }
     stage ('EC2 wait') {
       steps {
-        sh 'aws ec2 wait instance-status-ok --region eu-central-1'
+        sh '''aws ec2 wait instance-status-ok \\
+              --instance-ids $(terraform output -json instance_ids | jq -r \'.[]\') \\
+              --region eu-central-1'''
       }
     }
     stage ('Validate Ansible') {
@@ -48,7 +55,7 @@ pipeline {
       }
       input {
         message "Do you want to run Ansible?"
-        ok "Run Ansible!"
+        ok "Run Ansible"
       }
       steps {
         echo 'Ansible run'
@@ -59,13 +66,18 @@ pipeline {
         ansiblePlaybook(credentialsId: 'ec-2-ssh-key', inventory: 'aws_hosts', playbook: 'playbooks/main-playbook.yml')
       }
     }
+    stage ('Test Grafana and Prometheus') {
+      steps {
+        ansiblePlaybook(credentialsId: 'ec-2-ssh-key', inventory: 'aws_hosts', playbook: 'playbooks/node-test.yml'):
+      }
+    }
     stage ('Validate Destroy') {
       input {
         message "Do you want to destroy everything?"
-        ok "Destroy everything"
+        ok "Destroy everything!"
       }
       steps {
-        echo 'Everything has destroyed. Good bye!'
+        echo 'Everything is destroying. Good bye!'
       }
     }
     stage('Destroy') {
@@ -76,9 +88,12 @@ pipeline {
   }
   post {
     success {
-      echo 'Success!'
+      echo 'Success'
     }
     failure {
+      sh 'terraform destroy -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
+    }
+    aborted {
       sh 'terraform destroy -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
     }
   }
